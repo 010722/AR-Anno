@@ -20,8 +20,10 @@ class ViewController: UIViewController, ARSessionDelegate {
     var shadeView: UIView!
     var resetButton: UIButton!
     
-    var keyboardHeight: CGFloat!
+    weak var selectedStickyView: StickyNoteView?
     
+    var lastKeyboardHeight: Double?
+        
     var stickyNotes = [StickyNoteEntity]()
     
     var subscription: Cancellable!
@@ -44,8 +46,8 @@ class ViewController: UIViewController, ARSessionDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // Add observer to the keyboardWillShowNotification to get the height of the keyboard every time it is shown
-        let notificationName = UIResponder.keyboardWillShowNotification
+        // Add observer to the keyboardWillChangeFrameNotification to get the height of the keyboard every time its frame changes.
+        let notificationName = UIResponder.keyboardWillChangeFrameNotification
         let selector = #selector(keyboardIsPoppingUp(notification:))
         NotificationCenter.default.addObserver(self, selector: selector, name: notificationName, object: nil)
         

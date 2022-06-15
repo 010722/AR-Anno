@@ -227,7 +227,7 @@ if stickyView.isInTrashZone {
 Keeping screen-space annotations to a minimum will maximize the user's immersion in the AR experience. The sample app makes sticky notes small when the user isn't editing text, minimizing distractions so they can focus on the real-world environment. But for similar reasons, you should enlarge a sticky note when the user is editing text. To create a seamless transition between editing and nonediting states, animate the sticky note's size instead of changing it abruptly. See the   [`animateStickyViewToEditingFrame`](x-source-tag://SizeFrameWhenEditingBegins) function.  
 
 ``` swift
-fileprivate func animateStickyViewToEditingFrame(_ stickyView: StickyNoteView) {
+func animateStickyViewToEditingFrame(_ stickyView: StickyNoteView, keyboardHeight: Double) {
     let safeFrame = view.safeAreaLayoutGuide.layoutFrame
     let height = safeFrame.height - keyboardHeight
     let inset = height * 0.05
@@ -263,10 +263,10 @@ func animateTo(_ point: CGPoint) {
 ```
 [`View in Source`](x-source-tag://AnimateTo)
 
-[1]:https://developer.apple.com/documentation/realitykit/arview/3282007-raycast
+[1]:https://developer.apple.com/documentation/realitykit/arview/raycast(from:allowing:alignment:)
 [4]:https://developer.apple.com/documentation/uikit/uiview
 [5]:https://developer.apple.com/documentation/realitykit/arview
-[7]:https://developer.apple.com/documentation/arkit/recognizing_and_labeling_arbitrary_objects
+[7]:https://developer.apple.com/documentation/arkit/content_anchors/recognizing_and_labeling_arbitrary_objects
 [8]:https://developer.apple.com/documentation/arkit/arraycastresult/3132062-worldtransform
 [9]:https://developer.apple.com/documentation/uikit/uigesturerecognizer/1624219-location
 [10]:https://developer.apple.com/documentation/realitykit/entity

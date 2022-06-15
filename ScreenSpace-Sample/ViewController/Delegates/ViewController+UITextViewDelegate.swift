@@ -16,6 +16,7 @@ extension ViewController: UITextViewDelegate {
         // Get the main view for this sticky note.
         guard let stickyView = textView.firstSuperViewOfType(StickyNoteView.self) else { return }
         // ...
+        
         messageLabel.isHidden = true
         // Fade out the user interface when editting a sticky note.
         trashZone.fadeOut(duration: 0.3)
@@ -35,6 +36,12 @@ extension ViewController: UITextViewDelegate {
         // Brighten the sticky note and blur the background.
         focusOnStickyView(stickyView)
 
+        selectedStickyView = stickyView
+        
+        if let lastKeyboardHeight {
+            animateStickyViewToEditingFrame(stickyView,
+                                            keyboardHeight: lastKeyboardHeight)
+        }
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
@@ -42,6 +49,8 @@ extension ViewController: UITextViewDelegate {
         stickyView.stickyNote.shouldAnimate = true
         stickyView.stickyNote.isEditing = false
         unfocusOnStickyView(stickyView)
+        
+        selectedStickyView = nil
     }
     
     // MARK: - UITextViewDelegate Helper Functions
@@ -58,7 +67,6 @@ extension ViewController: UITextViewDelegate {
         UIViewPropertyAnimator(duration: 0.2, curve: .easeIn) {
             self.shadeView.alpha = 1
         }.startAnimation()
-        animateStickyViewToEditingFrame(stickyView)
     }
     
     fileprivate func unfocusOnStickyView(_ stickyView: StickyNoteView) {
@@ -70,7 +78,7 @@ extension ViewController: UITextViewDelegate {
         }.startAnimation()
     }
 
-    fileprivate func animateStickyViewToEditingFrame(_ stickyView: StickyNoteView) {
+    func animateStickyViewToEditingFrame(_ stickyView: StickyNoteView, keyboardHeight: Double) {
         let safeFrame = view.safeAreaLayoutGuide.layoutFrame
         let height = safeFrame.height - keyboardHeight
         let inset = height * 0.05

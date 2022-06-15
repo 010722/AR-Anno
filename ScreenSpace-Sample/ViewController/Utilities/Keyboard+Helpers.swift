@@ -16,9 +16,16 @@ extension ViewController {
     // Gets the height of the keyboard every time it appears
     @objc
     func keyboardIsPoppingUp(notification: NSNotification) {
+        
         if let keyboardFrame = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-            // Updates the state of 'keyboardHeight', which is used to determine the "safe" frame when editing a StickyView
-            keyboardHeight = keyboardFrame.height
+            
+            lastKeyboardHeight = keyboardFrame.height
+            
+            // Animates the selected sticky view based on the new keyboard height.
+            if let selectedStickyView {
+                animateStickyViewToEditingFrame(selectedStickyView,
+                                                keyboardHeight: keyboardFrame.height)
+            }
         }
     }
     
